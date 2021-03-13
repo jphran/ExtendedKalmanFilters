@@ -54,17 +54,16 @@ VectorXd CalculateRMSE(const vector<VectorXd> &estimations,
         return rmse;
     }
 
-    VectorXd squared_residuals(estimations[0].size());
+    VectorXd temp_residuals(estimations[0].size());
     for (int i=0; i < estimations.size(); ++i) {
-        squared_residuals = squared_residuals.array() +
-                ((estimations[i] - ground_truth[i]).array() * (estimations[i] - ground_truth[i]).array());
+        rmse = rmse.array() + ((estimations[i] - ground_truth[i]).array() * (estimations[i] - ground_truth[i]).array());
     }
 
     // calculate the mean
-    VectorXd mean = squared_residuals.array() / estimations.size();
+    rmse = rmse / estimations.size();
 
     // calculate the squared root
-    rmse = mean.array().sqrt();
+    rmse = rmse.array().sqrt();
 
     // return the result
     return rmse;
